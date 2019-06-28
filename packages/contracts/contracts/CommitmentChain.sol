@@ -5,12 +5,6 @@ pragma experimental ABIEncoderV2;
 import {DataTypes as dt} from "./DataTypes.sol";
 
 contract CommitmentChain {
-    address authenticationAddr;
-
-    constructor(address _authenticationAddr) public {
-        authenticationAddr = _authenticationAddr;
-    }
-
     function verifyInclusion(dt.StateUpdate memory _stateUpdate, bytes memory _inclusionProof) public returns (bool) {
         // Always return true for now until we can verify inclusion proofs.
         return true;
