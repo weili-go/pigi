@@ -26,14 +26,13 @@ describe('Create AggregatorWithIPCreationProxy with new PlasmaRegistry', () => {
         plasmaRegistry,
         '0x0000000000000000000000000000000000001234',
         await wallet.getAddress(),
-      ],
-      { gasLimit: 1000258612000000000 }
+      ], { gasLimit: 6700000 }
     )
   })
 
   it('Creates aggregator and assigns to Plasma Registry', async () => {
     expect(plasmaRegistry.getAggregatorCount()).to.eq(1)
-    expect(plasmaRegistry.aggregators[0].metadata.ip).to.eq(
+    expect(plasmaRegistry.aggregators[0].metadata.ip()).to.eq(
       await wallet.getAddress()
     )
   })
@@ -65,11 +64,11 @@ describe('Create AggregatorWithIPCreationProxy with existing PlasmaRegistry', ()
 
   it('Creates aggregator and assigns to Plasma Registry', async () => {
     expect(await plasmaRegistry.getAggregatorCount()).to.eq(1)
-    expect(await plasmaRegistry.aggregators[0].authenticationAddress).to.eq(
+    expect(await plasmaRegistry.aggregators[0].authenticationAddress()).to.eq(
       '0x0000000000000000000000000000000123456789'
     )
     expect(await plasmaRegistry.getAggregatorCount()).to.eq(2)
-    expect(await plasmaRegistry.aggregators[1].authenticationAddress).to.eq(
+    expect(await plasmaRegistry.aggregators[1].authenticationAddress()).to.eq(
       '0x0000000000000000000000000000000000001234'
     )
   })

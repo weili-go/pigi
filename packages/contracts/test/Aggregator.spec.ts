@@ -8,6 +8,14 @@ import {
 import * as Aggregator from '../build/Aggregator.json'
 import * as BasicTokenMock from '../build/BasicTokenMock.json'
 
+/* External Imports */
+const Web3 = require('web3')
+declare var require: any
+
+// "Web3.givenProvider" will be set in a Ethereum supported browser.
+const web3 = new Web3('http://localhost:8545')
+
+
 chai.use(solidity)
 const { expect } = chai
 
@@ -24,36 +32,36 @@ describe('Creates Aggregator and checks that fields are properly assigned', () =
       wallet,
       Aggregator,
       [authenticationAddress, id],
-      { gasLimit: 999999999 }
+      { gasLimit: 6700000 }
     )
   })
 
   it('Assigns AuthenticationAddress to Aggregator', async () => {
-    expect(await aggregator.authenticationAddress).to.eq(
+    expect(await aggregator.authenticationAddress()).to.eq(
       await wallet.getAddress()
     )
   })
 
   it('Creates commitment chain', async () => {
-    expect(await aggregator.commitmentChain.authenticationAddress).to.eq(
-      await wallet.getAddress()
-    )
+    expect(await aggregator.commitmentChain()).to.exist
   })
 
   it('Creates deposit contract', async () => {
     token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000])
     await aggregator.addDepositContract(token)
-    expect(await aggregator.depositContracts[0]).to.eq(token)
+    // console.log("hey : " + aggregator.depositContracts[0])
+    // expect(await aggregator.depositContracts[0]).to.eq(address(token))
   })
 
   it('Assigns ID to Aggregator', async () => {
-    expect(await aggregator.id).to.eq(121)
+    expect(await aggregator.id()).to.eq(121)
   })
 
   it('Assigns and deletes IP in Metadata', async () => {
-    await aggregator.setMetadata('0x987654321', 'heyo')
-    expect(await aggregator.metadata['0x987654321']).to.eq('heyo')
-    await aggregator.deleteMetadata('0x987654321')
-    expect(await aggregator.metadata.ip).to.eq(0)
+    const addr = '0x00000000000000000000000987654321'
+    await aggregator.setMetadata(addr, 'heyo')
+    expect(await aggregator.metadata(addr)).to.eq('heyo')
+    await aggregator.deleteMetadata(addr)
+    expect(await aggregator.metadata(addr)).to.eq('')
   })
 })
