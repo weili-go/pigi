@@ -288,7 +288,7 @@ export class DefaultRollupStateValidator implements RollupStateValidator {
           },
           slotIndex: fraudInputs[0].slotIndex,
         },
-        siblings: fraudInputs[1].inclusionProof.map((x) => add0x(x)),
+        siblings: fraudInputs[0].inclusionProof.map((x) => add0x(x)),
       },
       {
         storageSlot: {
